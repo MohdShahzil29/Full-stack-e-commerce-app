@@ -33,6 +33,11 @@ const ProductsSchema = new mongoose.Schema(
     shipping: {
       type: Boolean,
     },
+    postedBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );

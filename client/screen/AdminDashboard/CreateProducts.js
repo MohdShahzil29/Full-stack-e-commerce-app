@@ -15,8 +15,8 @@ import axios from "axios";
 // import RNPickerSelect from 'react-native-picker-select';
 
 const CreateProducts = () => {
-  const [photo, setPhoto] = useState("");
-  console.log(photo);
+  const [photo, setPhoto] = useState(null);
+  // console.log(photo);
   const [category, setCategory] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -26,18 +26,36 @@ const CreateProducts = () => {
   const [selected, setSelected] = useState("");
 
   const data = [
-    { key: "1", value: "Mobiles", disabled: true },
-    { key: "2", value: "Appliances" },
-    { key: "3", value: "Cameras" },
-    { key: "4", value: "Computers", disabled: true },
-    { key: "5", value: "Vegetables" },
-    { key: "6", value: "Diary Products" },
-    { key: "7", value: "Drinks" },
+    ...category.map((item) => ({
+      key: item._id,
+      value: item.name,
+    })),
+
+    // { key: "2", value: "Appliances" },
+    // { key: "3", value: "Cameras" },
+    // { key: "4", value: "Computers", },
+    // { key: "5", value: "Vegetables" },
+    // { key: "6", value: "Diary Products" },
+    // { key: "7", value: "Drinks" },
   ];
+
+  useEffect(() => {
+    // Request permission when the component mounts
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need media library permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
 
   const handleImagePick = async () => {
     const result = await ImagePicker.launchImageLibraryAsync();
-    // console.log("Result from Image Picker:", result);
+    console.log("Result from Image Picker:", result);
+    console.log("images uri", result.uri)
     if (!result.cancelled) {
       setPhoto(result.uri);
     }
@@ -87,13 +105,17 @@ const CreateProducts = () => {
         <Text style={styles.heading}>Create Your Product</Text>
         <TouchableOpacity onPress={handleImagePick}>
           {photo ? (
-            <Image source={{ uri: photo }} style={styles.image} />
+            <Image
+              source={{ uri: photo }} // Use the uri from the photo state
+              style={styles.image}
+            />
           ) : (
             <View style={styles.imagePlaceholder}>
               <Text style={styles.imageText}>Choose Image</Text>
             </View>
           )}
         </TouchableOpacity>
+
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}

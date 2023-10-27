@@ -13,6 +13,7 @@ import ImageSection from "./Menu/ImageSection";
 import { AuthContext } from "../context/authContext";
 import Card from "./PostCard/Card";
 import axios from "axios";
+import Search from "./Search";
 
 const Home = () => {
   const [state] = useContext(AuthContext);
@@ -22,10 +23,11 @@ const Home = () => {
         <View style={styles.menuBar}>
           <HomeMenu />
           <HomeNav />
+          <Search />
           <ImageSection />
           <View style={styles.text}>
             <Text style={styles.textPara}> Welcome 😎 {state?.user?.name}</Text>
-            <Text style={{ textAlign: "center", paddingTop: 10 }}>
+            <Text style={{ textAlign: "center", paddingTop: 10}}>
               Discover seamless online shopping with our diverse product range.
             </Text>
           </View>
@@ -51,21 +53,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 20,
     textAlign: "center",
+    // backgroundColor: "#03072A"
   },
   textPara: {
-    fontSize: 20,
+    fontSize: 20, 
   },
   cardContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
     gap: 15,
-    // justifyContent: "space-between",
-    // marginHorizontal: -5,
-    // marginTop: 10,
+    
   },
   scrollViews: {
-    flex: 1, // Make the ScrollView take all available vertical space
+    flex: 1,  
   },
 });
 

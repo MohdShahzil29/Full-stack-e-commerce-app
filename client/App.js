@@ -24,6 +24,8 @@ import GetProducts from "./screen/AdminDashboard/GetProducts";
 import Orders from "./screen/AdminDashboard/Orders";
 import CartDetails from "./screen/CartDetails";
 import Checkout from "./screen/CheackOut";
+import { CartProvider } from "./context/cart";
+import Payment from "./components/Payment";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -31,6 +33,7 @@ export default function App() {
     <NavigationContainer>
       {/* <RootNavigation /> */}
       <ContextProvider>
+        <CartProvider>
         <Stack.Navigator initialRouteName="Registers">
           <Stack.Screen
             name="Login"
@@ -66,6 +69,11 @@ export default function App() {
             name="Laptop"
             component={Laptop}
             // options={{ headerShown: false }}
+          /> 
+           <Stack.Screen
+            name="payment"
+            component={Payment}
+            // options={{ headerShown: false }}
           />
           <Stack.Screen
             name="Mobile"
@@ -85,7 +93,7 @@ export default function App() {
           <Stack.Screen
             name="PostDetail"
             component={PageDetail}
-            options={{ title: "Back" }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="SelectedCategory"
@@ -105,7 +113,7 @@ export default function App() {
           <Stack.Screen
             name="YourOrder"
             component={YourOrder}
-            options={{ headerShown: false }}
+            // options={{ headerShown: false }}
           />
           <Stack.Screen
             name="AdminPanel"
@@ -138,6 +146,7 @@ export default function App() {
             options={{ title: "Back", headerShown: false }}
           />
         </Stack.Navigator>
+        </CartProvider>
       </ContextProvider>
     </NavigationContainer>
   );

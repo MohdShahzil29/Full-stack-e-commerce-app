@@ -20,7 +20,7 @@ const Login = ({ navigation }) => {
   const handelLogin = async () => {
     try {
       if (!email || !password) {
-        Alert.alert("Please fill email and password");
+        Alert.alert("Please fill All Details");
         return;
       }
       const { data } = await axios.post(

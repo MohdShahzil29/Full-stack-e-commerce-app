@@ -41,7 +41,7 @@ const Card = () => {
   };
 
   const loadMore = () => {
-    setCount(count + 4);
+    setCount(count + 10);
   };
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = (screenWidth - 24) / 2;
@@ -74,13 +74,14 @@ const Card = () => {
         <Button title="Load More" onPress={loadMore} />
       )}
     </ScrollView>
+    
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 16, 
   },
   cardContainer: {
     flexDirection: "row",
@@ -115,5 +116,7 @@ const styles = StyleSheet.create({
     color: "#555",
   },
 });
+
+ 
 
 export default Card;

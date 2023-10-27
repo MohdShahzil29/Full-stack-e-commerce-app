@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema({
   },
   address: {
     type: String,
-    require: [true, "User address require"],
+    require: [true, "user address require"],
   },
   role: {
     type: Number,

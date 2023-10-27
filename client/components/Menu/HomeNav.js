@@ -39,7 +39,7 @@ const HomeNav = () => {
     gadgets: "gamepad",
     watch: "stopwatch",
     shoes: "shoe-prints",
-    Desktop: "laptop-house"
+    Desktop: "laptop"
   };
 
   return (
@@ -98,7 +98,7 @@ const HomeNav = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#033E3E",
+    backgroundColor: "#142B33",
     height: 60,
   },
   menuCus: {

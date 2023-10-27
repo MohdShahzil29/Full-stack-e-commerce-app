@@ -1,23 +1,33 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 
-const Cartitem = ({ item }) => {
+const Cartitem = ({ item, grandTotal, total }) => {
   const [qty, setQty] = useState(1);
+  const totalPrice = () => {
+    return (item.price * qty).toFixed(2);
+  };
   // Handle function for + -
   const handleAddQty = () => {
-    if (qty === 10) return alert("you cant add more than 10 quantity");
+    if (qty === 10) return alert("you can not add more than 10 quantity");
     setQty((prev) => prev + 1);
+    grandTotal(total + item.price);
   };
   const handleRemoveQty = () => {
     if (qty <= 1) return;
     setQty((prev) => prev - 1);
+    grandTotal(total - item.price);
   };
   return (
     <View style={styles.container}>
-      <Image source={{ uri: item?.imageUrl }} style={styles.image} />
+      <Image 
+      source={{
+        uri: `http://192.168.43.69:8000/api/v1/product/get-photo/${item?._id}`,
+      }}
+      
+      style={styles.image} />
       <View>
-        <Text style={styles.name}> {item?.name}</Text>
-        <Text style={styles.name}> Price : {item?.price} $</Text>
+        <Text style={styles.name}> {item?.name?.substring(0, 40)}</Text>
+        <Text style={styles.name}> Price : {totalPrice()} $</Text>
       </View>
       <View style={styles.btnContainer}>
         <TouchableOpacity style={styles.btnQty} onPress={handleRemoveQty}>

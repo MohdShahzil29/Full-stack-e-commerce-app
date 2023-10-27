@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   background: {
     width: "100%",
-    height: "100%",
+    // height: "300px",
     position: "absolute",
   },
   logoContainer: {
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: "#fff",
+    color: "black",
     marginBottom: 20,
     marginTop: 20,
   },
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   accountText: {
-    color: "white",
+    color: "black",
     fontSize: 15,
   },
   text: {

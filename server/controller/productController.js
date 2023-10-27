@@ -1,5 +1,7 @@
 const slugify = require("slugify");
 const productModels = require("../model/productModels");
+const orderModel = require("../model/orderModel")
+const fs = require('fs')
 
 const createProductController = async (req, res) => {
   const { name, description, price, category, quantity, shipping } = req.body;
@@ -7,7 +9,7 @@ const createProductController = async (req, res) => {
   const { photo } = req.files;
   try {
     // Validation
-    if (!name || !description || !price || !quantity) {
+    if (!name || !description || !price || !quantity || !category) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
@@ -20,9 +22,10 @@ const createProductController = async (req, res) => {
       name,
       description,
       price,
-      // category,
+      category,
       quantity,
       photo,
+      postedBy: req.auth._id
     });
 
     if (photo) {
@@ -72,6 +75,7 @@ const productListController = async (req, res) => {
     const products = await productModels
       .find({})
       .select("-photo")
+      
       .skip((page - 1) * perPage)
       .limit(perPage)
       .sort({ createdAt: -1 });
@@ -146,6 +150,92 @@ const productCountController = async (req, res) => {
   }
 };
 
+const getUserPostController = async (req, res) => {
+  try {
+    const userProducts = await productModels.find({postedBy: req.auth._id})
+    return res.status(200).send({
+      success: true,
+      message: 'User Post List',
+      userProducts
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({
+      success: false,
+      message: 'Problem while getting user post'
+    })
+  }
+}
+const getSearchController = async (req, res) => {
+  try {
+    const {keyword} = req.params
+    const result = await productModels.find({
+      $or: [
+        { name: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+      ],
+    })
+    .select("-photo");
+  res.json(result);
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({
+      success: false,
+      message: 'Error while searching'
+    })
+  }
+}
+
+//payment gateway api
+//token
+ const braintreeTokenController = async (req, res) => {
+  try {
+    gateway.clientToken.generate({}, function (err, response) {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.send(response);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//payment
+ const brainTreePaymentController = async (req, res) => {
+  try {
+    const { nonce, cart } = req.body;
+    let total = 0;
+    cart.map((i) => {
+      total += i.price;
+    });
+    let newTransaction = gateway.transaction.sale(
+      {
+        amount: total,
+        paymentMethodNonce: nonce,
+        options: {
+          submitForSettlement: true,
+        },
+      },
+      function (error, result) {
+        if (result) {
+          const order = new orderModel({
+            products: cart,
+            payment: result,
+            buyer: req.user._id,
+          }).save();
+          res.json({ ok: true });
+        } else {
+          res.status(500).send(error);
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   productListController,
   productPhotoController,
@@ -153,4 +243,8 @@ module.exports = {
   productCountController,
   createProductController,
   getAllProductsController,
+  getUserPostController,
+  braintreeTokenController,
+  brainTreePaymentController,
+  getSearchController
 };
