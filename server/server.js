@@ -18,6 +18,13 @@ app.use("/api/v1/auth", require("./routes/authRoutes"));
 app.use("/api/v1/product", require("./routes/productRoutes"));
 app.use("/api/v1/category", require("./routes/categoryController"));
 
+app.use("/", (req, res) => {
+  res.status(200).send({
+    "success": true,
+    message: "server working"
+    )}
+})
+
 const Port = process.env.PORT || 8000;
 
 app.listen(Port, () => console.log(`Server running on ${Port}`));
