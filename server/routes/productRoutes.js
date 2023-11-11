@@ -7,8 +7,6 @@ const {
   createProductController,
   getAllProductsController,
   getUserPostController,
-  braintreeTokenController,
-  brainTreePaymentController,
   getSearchController,
 } = require("../controller/productController");
 const formidable = require("express-formidable");
@@ -21,10 +19,5 @@ route.get("/get-photo/:pid", productPhotoController);
 route.get("/single-product/:slug", getSingleProductController);
 route.get("/product-count", productCountController);
 route.get('/get-user-post', getUserPostController)
-route.get('/search:keyword', getSearchController)
-//payments routes
-//token
-// route.get("/braintree/token", braintreeTokenController);
-// //payments
-// route.post("/braintree/payment",  brainTreePaymentController);
+route.get('/search/:keyword', getSearchController)
 module.exports = route;
